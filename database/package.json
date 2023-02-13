@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "cdk synth",
-    "predeploy": "cdk bootstrap",
+    "validate": " cdk synth > template.yml",
+    "predeploy": "cdk bootstrap && yarn validate",
     "deploy": "cdk deploy ",
     "destroy": "cdk destroy ",
     "test": "echo \"Error: no test specified\" && exit 1"

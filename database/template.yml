@@ -1,0 +1,402 @@
+Resources:
+  lguerracubedbvpcD4CC42EF:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/Resource
+  lguerracubedbvpcpublicSubnet1SubnetBF12DC1F:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1/Subnet
+  lguerracubedbvpcpublicSubnet1RouteTable3D2571A3:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1/RouteTable
+  lguerracubedbvpcpublicSubnet1RouteTableAssociation01410DC7:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcpublicSubnet1RouteTable3D2571A3
+      SubnetId:
+        Ref: lguerracubedbvpcpublicSubnet1SubnetBF12DC1F
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1/RouteTableAssociation
+  lguerracubedbvpcpublicSubnet1DefaultRoute09EF6568:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcpublicSubnet1RouteTable3D2571A3
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: lguerracubedbvpcIGW2ADD090E
+    DependsOn:
+      - lguerracubedbvpcVPCGW396DF12A
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1/DefaultRoute
+  lguerracubedbvpcpublicSubnet1EIPB2A19228:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1/EIP
+  lguerracubedbvpcpublicSubnet1NATGateway3B31D30F:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: lguerracubedbvpcpublicSubnet1SubnetBF12DC1F
+      AllocationId:
+        Fn::GetAtt:
+          - lguerracubedbvpcpublicSubnet1EIPB2A19228
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1
+    DependsOn:
+      - lguerracubedbvpcpublicSubnet1DefaultRoute09EF6568
+      - lguerracubedbvpcpublicSubnet1RouteTableAssociation01410DC7
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet1/NATGateway
+  lguerracubedbvpcpublicSubnet2Subnet9F61D005:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet2/Subnet
+  lguerracubedbvpcpublicSubnet2RouteTableDB4C1702:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet2/RouteTable
+  lguerracubedbvpcpublicSubnet2RouteTableAssociationC8941B75:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcpublicSubnet2RouteTableDB4C1702
+      SubnetId:
+        Ref: lguerracubedbvpcpublicSubnet2Subnet9F61D005
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet2/RouteTableAssociation
+  lguerracubedbvpcpublicSubnet2DefaultRoute2E25C119:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcpublicSubnet2RouteTableDB4C1702
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: lguerracubedbvpcIGW2ADD090E
+    DependsOn:
+      - lguerracubedbvpcVPCGW396DF12A
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/publicSubnet2/DefaultRoute
+  lguerracubedbvpcprivateSubnet1Subnet4685328D:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet1
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet1/Subnet
+  lguerracubedbvpcprivateSubnet1RouteTable4F2D94C5:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet1
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet1/RouteTable
+  lguerracubedbvpcprivateSubnet1RouteTableAssociation1FFC0C02:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcprivateSubnet1RouteTable4F2D94C5
+      SubnetId:
+        Ref: lguerracubedbvpcprivateSubnet1Subnet4685328D
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet1/RouteTableAssociation
+  lguerracubedbvpcprivateSubnet1DefaultRoute02A7587F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcprivateSubnet1RouteTable4F2D94C5
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: lguerracubedbvpcpublicSubnet1NATGateway3B31D30F
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet1/DefaultRoute
+  lguerracubedbvpcprivateSubnet2SubnetD9BF721C:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.3.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet2
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet2/Subnet
+  lguerracubedbvpcprivateSubnet2RouteTable89B05B3C:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet2
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet2/RouteTable
+  lguerracubedbvpcprivateSubnet2RouteTableAssociationFE2FA04D:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcprivateSubnet2RouteTable89B05B3C
+      SubnetId:
+        Ref: lguerracubedbvpcprivateSubnet2SubnetD9BF721C
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet2/RouteTableAssociation
+  lguerracubedbvpcprivateSubnet2DefaultRoute08FA75A7:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: lguerracubedbvpcprivateSubnet2RouteTable89B05B3C
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: lguerracubedbvpcpublicSubnet1NATGateway3B31D30F
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/privateSubnet2/DefaultRoute
+  lguerracubedbvpcIGW2ADD090E:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: LguerraDatabaseStack/lguerra-cube-db-vpc
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/IGW
+  lguerracubedbvpcVPCGW396DF12A:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+      InternetGatewayId:
+        Ref: lguerracubedbvpcIGW2ADD090E
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-vpc/VPCGW
+  lguerracubedbsgC51E9679:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: LguerraDatabaseStack/lguerra-cube-db-sg
+      GroupName: lguerra-cube-db-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: lguerracubedbvpcD4CC42EF
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db-sg/Resource
+  lguerracubedbSubnetGroup2853A3DC:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for lguerra-cube-db database
+      SubnetIds:
+        - Ref: lguerracubedbvpcpublicSubnet1SubnetBF12DC1F
+        - Ref: lguerracubedbvpcpublicSubnet2Subnet9F61D005
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db/SubnetGroup/Default
+  lguerracubedbB4246AB2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: "100"
+      BackupRetentionPeriod: 1
+      CopyTagsToSnapshot: true
+      DBInstanceClass: db.t3.micro
+      DBName: cubedb
+      DBSubnetGroupName:
+        Ref: lguerracubedbSubnetGroup2853A3DC
+      DeletionProtection: false
+      Engine: postgres
+      EngineVersion: "14.2"
+      MasterUsername: postgres
+      MasterUserPassword: postgres
+      MultiAZ: false
+      PubliclyAccessible: true
+      StorageType: gp2
+      VPCSecurityGroups:
+        - Fn::GetAtt:
+            - lguerracubedbsgC51E9679
+            - GroupId
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/lguerra-cube-db/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/2WPwW7CMAyGn4V7mo1O4s7KhHqZonbiOrmpJwzFQYkDqqq++1o6KNJO/vLpT/wn1atUpwu4hsTWx6ShSnelgD2qQX13aFPd7c5WZT+8M5kysWrIlrFilNHNVLgo+AVVg7Of3ToEZwmEHD/CI3zkZhyfIFsQvEKrjKfLgPPDOQv6ge+BqcnfaS1D1/0JWVSJNnqSdutdPN86PIte+TrobgMCFQTMOQiwRTXtedzZvP8T92jfqwKDi97emj9z5rim8W+9Mq3sHb+86eVSvy4OgSjxkYVOqItp/gL8FhQ2cgEAAA==
+    Metadata:
+      aws:cdk:path: LguerraDatabaseStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
