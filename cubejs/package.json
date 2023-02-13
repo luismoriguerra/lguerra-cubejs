@@ -1,0 +1,13 @@
+{
+  "name": "cubejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker run -p 4000:4000 -p 3000:3000 -v ${PWD}:/cube/conf -e CUBEJS_DEV_MODE=true cubejs/cube",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
