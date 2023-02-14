@@ -4,6 +4,7 @@ cube(`Gitarchive`, {
     // Learn more here: https://cube.dev/docs/caching/pre-aggregations/getting-started
 
     main: {
+      type: `rollup`,
       measures: [Gitarchive.count_repository_name],
       dimensions: [Gitarchive.username]
     }
