@@ -52,9 +52,6 @@ class DatabaseStack(Stack):
         # Create a PostgreSQL database instance
         db = rds.DatabaseInstance(
             self, "lguerra-cube-db",
-            # engine=rds.DatabaseInstanceEngine.postgres(
-            #     version=rds.PostgresEngineVersion.
-            # ),
             engine=rds.DatabaseInstanceEngine.postgres(
                 version=rds.PostgresEngineVersion.of("14.2", "14")),
             instance_type=ec2.InstanceType.of(
