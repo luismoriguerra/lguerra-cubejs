@@ -1,0 +1,25 @@
+-- AlterTable
+CREATE SEQUENCE github_events_id_seq;
+ALTER TABLE "github_events" ALTER COLUMN "id" SET DEFAULT nextval('github_events_id_seq'),
+ALTER COLUMN "created_at" DROP NOT NULL,
+ALTER COLUMN "repo_id" DROP NOT NULL,
+ALTER COLUMN "actor_id" DROP NOT NULL,
+ALTER COLUMN "additions" DROP NOT NULL,
+ALTER COLUMN "deletions" DROP NOT NULL,
+ALTER COLUMN "number" DROP NOT NULL,
+ALTER COLUMN "comment_id" DROP NOT NULL,
+ALTER COLUMN "org_id" DROP NOT NULL,
+ALTER COLUMN "closed_at" DROP NOT NULL,
+ALTER COLUMN "comments" DROP NOT NULL,
+ALTER COLUMN "pr_merged_at" DROP NOT NULL,
+ALTER COLUMN "pr_changed_files" DROP NOT NULL,
+ALTER COLUMN "pr_review_comments" DROP NOT NULL,
+ALTER COLUMN "pr_or_issue_id" DROP NOT NULL,
+ALTER COLUMN "event_day" DROP NOT NULL,
+ALTER COLUMN "event_month" DROP NOT NULL,
+ALTER COLUMN "event_year" DROP NOT NULL,
+ALTER COLUMN "push_size" DROP NOT NULL,
+ALTER COLUMN "push_distinct_size" DROP NOT NULL,
+ALTER COLUMN "creator_user_id" DROP NOT NULL,
+ALTER COLUMN "pr_or_issue_created_at" DROP NOT NULL;
+ALTER SEQUENCE github_events_id_seq OWNED BY "github_events"."id";

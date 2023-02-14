@@ -1,56 +1,54 @@
 cube(`Gitarchive`, {
   sql: `SELECT * FROM public.gitarchive`,
-
-  preAggregations: {
-    // Pre-Aggregations definitions go here
+  preAggregations: {// Pre-Aggregations definitions go here
     // Learn more here: https://cube.dev/docs/caching/pre-aggregations/getting-started
+
+    main: {
+      measures: [Gitarchive.count_repository_name],
+      dimensions: [Gitarchive.username]
+    }
   },
-
   joins: {},
-
   measures: {
     user_name: {
       sql: `${CUBE}.metadata->'actor'->>'login'`,
-      type: `string`,
+      type: `string`
     },
     count: {
       type: `count`,
-      drillMembers: [id],
+      drillMembers: [id]
     },
     count_username: {
       sql: `${CUBE}.metadata->'actor'->>'login'`,
-      type: `countDistinct`,
+      type: `countDistinct`
     },
     count_repository_name: {
       sql: `${CUBE}.metadata->'repo'->>'name'`,
-      type: `countDistinct`,
-    },
+      type: `countDistinct`
+    }
   },
-
   dimensions: {
     username: {
       sql: `${CUBE}.metadata->'actor'->>'login'`,
-      type: `string`,
+      type: `string`
     },
     repository_name: {
       sql: `${CUBE}.metadata->'repo'->>'name'`,
-      type: `string`,
+      type: `string`
     },
     createdAt1: {
       sql: `${CUBE}.metadata->>'created_at'`,
-      type: `time`,
+      type: `time`
     },
     id: {
       sql: `id`,
       type: `number`,
-      primaryKey: true,
+      primaryKey: true
     },
-
     metadata: {
       sql: `metadata`,
-      type: `string`,
-    },
+      type: `string`
+    }
   },
-
-  dataSource: `default`,
+  dataSource: `default`
 });
