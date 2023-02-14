@@ -8,8 +8,9 @@
   },
   "scripts": {
     "dev": "cd app && yarn dev",
-    "predeploy": "cdk bootstrap && cdk synth",
-    "deploy": "cdk deploy",
+    "build": "cd app && yarn build",
+    "predeploy": "yarn build",
+    "deploy": "cdk bootstrap && cdk synth && cdk deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
