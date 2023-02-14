@@ -36,7 +36,7 @@ class CdkStack(Stack):
         s3_deployment.BucketDeployment(
             self, "angular-app-bucket-deployment",
             sources=[s3_deployment.Source.asset(
-                path="../dist/client")],
+                path="./dist/client")],
             destination_bucket=app_bucket,
             distribution=cf_dist,
             distribution_paths=["/*"]
@@ -45,8 +45,3 @@ class CdkStack(Stack):
         CfnOutput(
             self, "angular-cloudfront-url",
             value=cf_dist.distribution_domain_name)
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "CdkQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )

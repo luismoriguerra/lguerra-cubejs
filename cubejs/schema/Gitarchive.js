@@ -17,8 +17,12 @@ cube(`Gitarchive`, {
       type: `count`,
       drillMembers: [id],
     },
-    countusername: {
+    count_username: {
       sql: `${CUBE}.metadata->'actor'->>'login'`,
+      type: `countDistinct`,
+    },
+    count_repository_name: {
+      sql: `${CUBE}.metadata->'repo'->>'name'`,
       type: `countDistinct`,
     },
   },
@@ -28,7 +32,7 @@ cube(`Gitarchive`, {
       sql: `${CUBE}.metadata->'actor'->>'login'`,
       type: `string`,
     },
-    reponame: {
+    repository_name: {
       sql: `${CUBE}.metadata->'repo'->>'name'`,
       type: `string`,
     },

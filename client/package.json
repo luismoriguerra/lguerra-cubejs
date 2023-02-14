@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "validate": " cdk synth > template.yml",
+    "predeploy": "cdk bootstrap && yarn validate",
+    "deploy": "cdk deploy "
   },
   "private": true,
   "dependencies": {
