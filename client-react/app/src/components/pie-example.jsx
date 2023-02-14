@@ -1,36 +1,36 @@
-import ReactDOM from 'react-dom';
-import cubejs from '@cubejs-client/core';
-import { QueryRenderer } from '@cubejs-client/react';
-import { Spin } from 'antd';
+import ReactDOM from "react-dom";
+import cubejs from "@cubejs-client/core";
+import { QueryRenderer } from "@cubejs-client/react";
+import { Spin } from "antd";
 // import 'antd/dist/antd.css';
-import React from 'react';
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import { useDeepCompareMemo } from 'use-deep-compare';
-import { Row, Col, Statistic, Table } from 'antd';
+import React from "react";
+import { Line, Bar, Pie } from "react-chartjs-2";
+import { useDeepCompareMemo } from "use-deep-compare";
+import { Row, Col, Statistic, Table } from "antd";
 
 const COLORS_SERIES = [
-  '#5b8ff9',
-  '#5ad8a6',
-  '#5e7092',
-  '#f6bd18',
-  '#6f5efa',
-  '#6ec8ec',
-  '#945fb9',
-  '#ff9845',
-  '#299796',
-  '#fe99c3',
+  "#5b8ff9",
+  "#5ad8a6",
+  "#5e7092",
+  "#f6bd18",
+  "#6f5efa",
+  "#6ec8ec",
+  "#945fb9",
+  "#ff9845",
+  "#299796",
+  "#fe99c3",
 ];
 const PALE_COLORS_SERIES = [
-  '#d7e3fd',
-  '#daf5e9',
-  '#d6dbe4',
-  '#fdeecd',
-  '#dad8fe',
-  '#dbf1fa',
-  '#e4d7ed',
-  '#ffe5d2',
-  '#cce5e4',
-  '#ffe6f0',
+  "#d7e3fd",
+  "#daf5e9",
+  "#d6dbe4",
+  "#fdeecd",
+  "#dad8fe",
+  "#dbf1fa",
+  "#e4d7ed",
+  "#ffe5d2",
+  "#cce5e4",
+  "#ffe6f0",
 ];
 const commonOptions = {
   maintainAspectRatio: false,
@@ -39,7 +39,7 @@ const commonOptions = {
   },
   plugins: {
     legend: {
-      position: 'bottom',
+      position: "bottom",
     },
   },
   scales: {
@@ -67,7 +67,7 @@ const useDrilldownCallback = ({
       const { yValues } = datasets[datasetIndex];
       const xValues = [labels[index]];
 
-      if (typeof onDrilldownRequested === 'function') {
+      if (typeof onDrilldownRequested === "function") {
         onDrilldownRequested(
           {
             xValues,
@@ -138,7 +138,7 @@ const BarChartRenderer = ({ resultSet, pivotConfig, onDrilldownRequested }) => {
     labels: resultSet.categories(pivotConfig).map((c) => c.x),
     datasets,
   };
-  const stacked = !(pivotConfig.x || []).includes('measures');
+  const stacked = !(pivotConfig.x || []).includes("measures");
   const options = {
     ...commonOptions,
     scales: {
@@ -258,18 +258,18 @@ const formatTableData = (columns, data) => {
       return value;
     }
 
-    if (type === 'boolean') {
-      if (typeof value === 'boolean') {
+    if (type === "boolean") {
+      if (typeof value === "boolean") {
         return value.toString();
-      } else if (typeof value === 'number') {
+      } else if (typeof value === "number") {
         return Boolean(value).toString();
       }
 
       return value;
     }
 
-    if (type === 'number' && format === 'percent') {
-      return [parseFloat(value).toFixed(2), '%'].join('');
+    if (type === "number" && format === "percent") {
+      return [parseFloat(value).toFixed(2), "%"].join("");
     }
 
     return value.toString();
@@ -299,13 +299,19 @@ const TableRenderer = ({ resultSet, pivotConfig }) => {
   );
 };
 
-
-const cubejsApi = cubejs(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzYzMzkwMzUsImV4cCI6MTY3NjQyNTQzNX0.32DLogt0AsFPaf5XaiUE1AYfBU7T4KfzFTkSrkitkKc',
-  { apiUrl: 'http://localhost:4000/cubejs-api/v1' }
-);
-
-const renderChart = ({ resultSet, error, pivotConfig, onDrilldownRequested }) => {
+// const cubejsApi = cubejs(
+//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzYzMzkwMzUsImV4cCI6MTY3NjQyNTQzNX0.32DLogt0AsFPaf5XaiUE1AYfBU7T4KfzFTkSrkitkKc',
+//   { apiUrl: 'http://localhost:4000/cubejs-api/v1' }
+// );
+const cubejsApi = cubejs(import.meta.env.VITE_CUBEJS_TOKEN, {
+  apiUrl: import.meta.env.VITE_CUBEJS_API_URL,
+});
+const renderChart = ({
+  resultSet,
+  error,
+  pivotConfig,
+  onDrilldownRequested,
+}) => {
   if (error) {
     return <div>{error.toString()}</div>;
   }
@@ -315,47 +321,40 @@ const renderChart = ({ resultSet, error, pivotConfig, onDrilldownRequested }) =>
   }
 
   return (
-  <PieChartRenderer
-    resultSet={resultSet}
-    pivotConfig={pivotConfig}
-    onDrilldownRequested={onDrilldownRequested}
-  />
-);
-
+    <PieChartRenderer
+      resultSet={resultSet}
+      pivotConfig={pivotConfig}
+      onDrilldownRequested={onDrilldownRequested}
+    />
+  );
 };
 
 const ChartRenderer = () => {
   return (
     <QueryRenderer
       query={{
-  "limit": 20,
-  "measures": [
-    "Gitarchive.count_repository_name"
-  ],
-  "order": {
-    "Gitarchive.count_repository_name": "desc"
-  },
-  "dimensions": [
-    "Gitarchive.username"
-  ]
-}}
+        limit: 20,
+        measures: ["Gitarchive.count_repository_name"],
+        order: {
+          "Gitarchive.count_repository_name": "desc",
+        },
+        dimensions: ["Gitarchive.username"],
+      }}
       cubejsApi={cubejsApi}
       resetResultSetOnChange={false}
-      render={(props) => renderChart({
-        ...props,
-        chartType: 'pie',
-        pivotConfig: {
-  "x": [
-    "Gitarchive.username"
-  ],
-  "y": [
-    "measures"
-  ],
-  "fillMissingDates": true,
-  "joinDateRange": false,
-  "limit": 20
-}
-      })}
+      render={(props) =>
+        renderChart({
+          ...props,
+          chartType: "pie",
+          pivotConfig: {
+            x: ["Gitarchive.username"],
+            y: ["measures"],
+            fillMissingDates: true,
+            joinDateRange: false,
+            limit: 20,
+          },
+        })
+      }
     />
   );
 };
@@ -363,4 +362,3 @@ const ChartRenderer = () => {
 export default ChartRenderer;
 // const rootElement = document.getElementById('root');
 // ReactDOM.render(<ChartRenderer />, rootElement);
-      

@@ -254,10 +254,9 @@ const TableRenderer = ({ resultSet, pivotConfig }) => {
   );
 };
 
-const cubejsApi = cubejs(
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzYzMzkwMzUsImV4cCI6MTY3NjQyNTQzNX0.32DLogt0AsFPaf5XaiUE1AYfBU7T4KfzFTkSrkitkKc",
-  { apiUrl: "http://localhost:4000/cubejs-api/v1" }
-);
+const cubejsApi = cubejs(import.meta.env.VITE_CUBEJS_TOKEN, {
+  apiUrl: import.meta.env.VITE_CUBEJS_API_URL,
+});
 
 const renderChart = ({
   resultSet,
