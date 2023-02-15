@@ -2,13 +2,6 @@ cube(`GithubEvents`, {
   sql: `SELECT * FROM public.github_events`,
   preAggregations: {// Pre-Aggregations definitions go here
     // Learn more here: https://cube.dev/docs/caching/pre-aggregations/getting-started
-
-    main: {
-      measures: [GithubEvents.count],
-      dimensions: [GithubEvents.repoName],
-      timeDimension: GithubEvents.createdAt,
-      granularity: `day`
-    }
   },
   joins: {},
   measures: {
