@@ -5,6 +5,7 @@ import "antd/dist/antd.css";
 import ChartRenderer from "./components/chart-example.jsx";
 import PieExample from "./components/pie-example.jsx";
 import BotsYears from "./components/bots_years.jsx";
+import LineChart from "./components/line-chart.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -13,6 +14,10 @@ function App() {
     <div className="">
       <p>react client 3</p>
       <div>
+        <div style={{ height: "500px" }}>
+          <LineChart key={"line-chart"} />
+        </div>
+        <br />
         <BotsYears key={"bots-years"} />
         <br />
         <ChartRenderer key={"table-example"} />
@@ -20,7 +25,6 @@ function App() {
           <PieExample key={"pie-example"} />
         </div>
       </div>
-
     </div>
   );
 }
