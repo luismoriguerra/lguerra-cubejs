@@ -4,6 +4,7 @@ cube(`GithubEvents`, {
     // Learn more here: https://cube.dev/docs/caching/pre-aggregations/getting-started
 
     main: {
+      type: `rollup`,
       measures: [GithubEvents.count],
       dimensions: [GithubEvents.repoName],
       timeDimension: GithubEvents.createdAt,
